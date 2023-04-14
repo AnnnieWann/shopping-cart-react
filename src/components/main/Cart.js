@@ -1,13 +1,15 @@
-const cartItems = [
+import { useState } from "react";
+
+let cartItems = [
   {
-    id: "1",
+    id: 1,
     name: "貓咪罐罐",
     img: "https://picsum.photos/300/300?text=1",
     price: 100,
-    quantity: 2,
+    quantity: 1,
   },
   {
-    id: "2",
+    id: 2,
     name: "貓咪干干",
     img: "https://picsum.photos/300/300?text=2",
     price: 200,
@@ -15,22 +17,32 @@ const cartItems = [
   },
 ];
 
-function CartItem({ id, name, price, img, quantity }) {
+function CartItem({ product, increaseFunction, decreaseFunction }) {
   return (
-    <div className="flex flex-row mx-auto mb-8">
-      <img alt={name} className="w-24 h-24 rounded mr-5 w-1/6" src={img} />
+    <div className="flex flex-row mx-auto mb-8" id={product.id}>
+      <img
+        alt={product.name}
+        className="w-24 h-24 rounded mr-5 w-1/6"
+        src={product.img}
+      />
       <div className="w-3/4 flex flex-col">
         <div className="flex flex-row justify-between">
-          <h3 className="mb-4">{name}</h3>
-          <p className="font-bold">${price}</p>
+          <h3 className="mb-4">{product.name}</h3>
+          <p className="font-bold">${product.price}</p>
         </div>
         <div className="product-control-container">
           <div className="flex flex-row w-1/2 justify-between">
-            <button className="rounded-3xl w-6 h-6 flex flex-row justify-center items-center mr-2 bg-gray-300">
+            <button
+              onClick={() => decreaseFunction(product.id)}
+              className="rounded-3xl w-6 h-6 flex flex-row justify-center items-center mr-2 bg-gray-300"
+            >
               -
             </button>
-            <span>{quantity}</span>
-            <button className="rounded-3xl w-6 h-6 flex flex-row justify-center items-center mr-2 bg-gray-300">
+            <span>{product.quantity}</span>
+            <button
+              onClick={() => increaseFunction(product.id)}
+              className="rounded-3xl w-6 h-6 flex flex-row justify-center items-center mr-2 bg-gray-300"
+            >
               +
             </button>
           </div>
@@ -41,13 +53,42 @@ function CartItem({ id, name, price, img, quantity }) {
 }
 
 export default function Cart() {
+  const [items, setItems] = useState(cartItems);
+
+  console.log(items);
+
+  function handleIncreaseItem(id) {
+    let copiedItems = items.map((item) => {
+      if (item.id === id) {
+        item.quantity += 1;
+      }
+      return item;
+    });
+    setItems(copiedItems);
+  }
+
+  function handleDecreaseItem(id) {
+    let copiedItems = items.map((item) => {
+      if (item.id === id) {
+        item.quantity -= 1;
+      }
+      return item;
+    });
+    setItems(copiedItems);
+  }
+
   return (
     <div className="flex flex-col justify-center border border-gray-300 py-8 px-6 rounded">
       <h3 className="font-bold text-lg mb-8">購物籃</h3>
       <div className="">
         {/* Item */}
-        {cartItems.map((item) => (
-          <CartItem {...item} key={item.id} />
+        {items.map((item) => (
+          <CartItem
+            product={item}
+            key={item.id}
+            increaseFunction={handleIncreaseItem}
+            decreaseFunction={handleDecreaseItem}
+          />
         ))}
       </div>
       <span className="border border-gray-300" />
