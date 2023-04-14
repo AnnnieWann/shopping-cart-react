@@ -54,8 +54,9 @@ function CartItem({ product, increaseFunction, decreaseFunction }) {
 
 export default function Cart() {
   const [items, setItems] = useState(cartItems);
-
-  console.log(items);
+  let totalSum = items.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.quantity * currentValue.price;
+  }, 0);
 
   function handleIncreaseItem(id) {
     let copiedItems = items.map((item) => {
@@ -101,7 +102,7 @@ export default function Cart() {
       {/* Total amount */}
       <div className="flex flex-row justify-between mt-4 mb-8">
         <span className="text-sm">小計</span>
-        <span className="text-sm font-bold">$599</span>
+        <span className="text-sm font-bold">${totalSum.toLocaleString()}</span>
       </div>
     </div>
   );
