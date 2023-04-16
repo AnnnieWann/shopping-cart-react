@@ -1,21 +1,5 @@
-import { useState } from "react";
-
-let cartItems = [
-  {
-    id: 1,
-    name: "貓咪罐罐",
-    img: "https://picsum.photos/300/300?text=1",
-    price: 100,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "貓咪干干",
-    img: "https://picsum.photos/300/300?text=2",
-    price: 200,
-    quantity: 1,
-  },
-];
+import { useState, useContext } from "react";
+import { CartItemContext } from "../../context/CartContext";
 
 function CartItem({ product, increaseFunction, decreaseFunction }) {
   return (
@@ -53,7 +37,9 @@ function CartItem({ product, increaseFunction, decreaseFunction }) {
 }
 
 export default function Cart() {
+  const cartItems = useContext(CartItemContext);
   const [items, setItems] = useState(cartItems);
+
   let totalSum = items.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.quantity * currentValue.price;
   }, 0);
@@ -82,15 +68,17 @@ export default function Cart() {
     <div className="flex flex-col justify-center border border-gray-300 py-8 px-6 rounded">
       <h3 className="font-bold text-lg mb-8">購物籃</h3>
       <div className="">
-        {/* Item */}
-        {items.map((item) => (
-          <CartItem
-            product={item}
-            key={item.id}
-            increaseFunction={handleIncreaseItem}
-            decreaseFunction={handleDecreaseItem}
-          />
-        ))}
+        <CartItemContext.Provider value={items}>
+          {/* Item */}
+          {items.map((item) => (
+            <CartItem
+              product={item}
+              key={item.id}
+              increaseFunction={handleIncreaseItem}
+              decreaseFunction={handleDecreaseItem}
+            />
+          ))}
+        </CartItemContext.Provider>
       </div>
       <span className="border border-gray-300" />
       {/* Shipping Fee */}
