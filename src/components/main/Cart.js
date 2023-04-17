@@ -1,5 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartItemContext } from "../../context/CartContext";
+import { FormContext } from "../../context/FormContext";
 
 function CartItem({ product, increaseFunction, decreaseFunction }) {
   return (
@@ -39,10 +40,15 @@ function CartItem({ product, increaseFunction, decreaseFunction }) {
 export default function Cart() {
   const cartItems = useContext(CartItemContext);
   const [items, setItems] = useState(cartItems);
+  const { formData, setFormData } = useContext(FormContext);
 
   let totalSum = items.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.quantity * currentValue.price;
   }, 0);
+
+  useEffect(() => {
+    setFormData({ ...formData, totalSum: totalSum });
+  }, [items]);
 
   function handleIncreaseItem(id) {
     let copiedItems = items.map((item) => {
