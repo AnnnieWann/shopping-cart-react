@@ -28,16 +28,17 @@ export default function Form() {
   return (
     <>
       <StepProgress currentStep={step} />
-
-      <div className={`${step !== 1 && "hidden"}`}>
-        <StepOne />
-      </div>
-      <div className={`${step !== 2 && "hidden"}`}>
-        <StepTwo />
-      </div>
-      <div className={`${step !== 3 && "hidden"}`}>
-        <StepThree />
-      </div>
+      <form>
+        <div className={`${step !== 1 && "hidden"}`}>
+          <StepOne />
+        </div>
+        <div className={`${step !== 2 && "hidden"}`}>
+          <StepTwo />
+        </div>
+        <div className={`${step !== 3 && "hidden"}`}>
+          <StepThree />
+        </div>
+      </form>
       <ProgressControl
         onLeftClick={handleMinusStep}
         onRightClick={handlePlusStep}

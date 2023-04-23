@@ -8,6 +8,7 @@ export default function StepOne({ type, label, name, placeholder, onChange }) {
         placeholder={placeholder}
         className="box-border rounded border border-gray-400 w-full h-3/5 text-xs px-2"
         onChange={onChange}
+        required
       />
     </>
   );
